@@ -4,6 +4,7 @@
   "description": "learn webpack & usage experiment",
   "main": "src/app.js",
   "scripts": {
+    "start": "webpack-dev-server",
     "build": "rm bin/* && webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,7 +23,10 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.3"
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2",
+    "webpack-merge": "^2.3.1",
+    "webpack-validator": "^2.3.0"
   },
   "dependencies": {
     "react": "^15.4.0",

@@ -1,13 +1,17 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const merge = require('webpack-merge');
+const validate = require('webpack-validator');
+
+const conf = require('./conf/config');
 
 const PATHS = {
     src: path.join(__dirname, 'src'),
     bin: path.join(__dirname, 'bin')
 };
 
-module.exports = {
+const common = {
     entry: {
         app: PATHS.src,
         vendor: ['react', 'react-dom']
@@ -19,15 +23,15 @@ module.exports = {
     module: {
         loaders: [{
             test: /\.js$/,
-            exclude: /node_modules/,
+            include: PATHS.src,
             loader: 'babel-loader',
             query: {
                 presets: ['es2015', 'react']
             }
         }, {
             test: /\.less$/,
-            exclude: /node_modules/,
-            loader: 'style!css!less'
+            include: PATHS.src,
+            loaders: ['style', 'css', 'less']
         }]
     },
     plugins: [
@@ -37,3 +41,25 @@ module.exports = {
         })
     ]
 };
+
+var config;
+
+switch (process.env.npm_lifecyle_event) {
+    case 'build':
+        config = merge(
+            common,
+            {}
+        );
+        break;
+    default:
+        config = merge(
+            common,
+            conf.devServer({
+                host: process.env.HOST,
+                port: process.env.PORT
+            })
+        );
+}
+
+module.exports = validate(config);
+
