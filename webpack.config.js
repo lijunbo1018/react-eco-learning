@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const validate = require('webpack-validator');
@@ -13,8 +12,7 @@ const PATHS = {
 
 const common = {
     entry: {
-        app: PATHS.src,
-        vendor: ['react', 'react-dom']
+        app: PATHS.src
     },
     output: {
         path: PATHS.bin,
@@ -24,7 +22,7 @@ const common = {
         loaders: [{
             test: /\.js$/,
             include: PATHS.src,
-            loader: 'babel-loader',
+            loader: 'babel',
             query: {
                 presets: ['es2015', 'react']
             }
@@ -35,7 +33,6 @@ const common = {
         }]
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
         new HtmlWebpackPlugin({
             title: 'Webpack Explore'
         })
@@ -44,16 +41,27 @@ const common = {
 
 var config;
 
-switch (process.env.npm_lifecyle_event) {
+switch (process.env.npm_lifecycle_event) {
     case 'build':
         config = merge(
             common,
-            {}
+            {
+                devtool: 'source-map'
+            },
+            conf.setFreeVariable('process.env.NODE_ENV', 'production'),
+            conf.extractBundle({
+                name: 'vendor',
+                entries: ['react', 'react-dom']
+            }),
+            conf.minify()
         );
         break;
     default:
         config = merge(
             common,
+            {
+                devtool: 'eval-source-map'
+            },
             conf.devServer({
                 host: process.env.HOST,
                 port: process.env.PORT
