@@ -1,7 +1,4 @@
 .DS_Store
-
-.idea/*
-
 bin/
-
 node_modules/
+.idea/

@@ -7,12 +7,17 @@ const conf = require('./conf/config');
 
 const PATHS = {
     src: path.join(__dirname, 'src'),
+    style: [
+        path.join(__dirname, 'node_modules', 'purecss'),
+        path.join(__dirname, 'src', 'style.less')
+    ],
     bin: path.join(__dirname, 'bin')
 };
 
 const common = {
     entry: {
-        app: PATHS.src
+        app: PATHS.src,
+        style: PATHS.style
     },
     output: {
         path: PATHS.bin,
@@ -26,10 +31,6 @@ const common = {
             query: {
                 presets: ['es2015', 'react']
             }
-        }, {
-            test: /\.less$/,
-            include: PATHS.src,
-            loaders: ['style', 'css', 'less']
         }]
     },
     plugins: [
@@ -46,14 +47,21 @@ switch (process.env.npm_lifecycle_event) {
         config = merge(
             common,
             {
-                devtool: 'source-map'
+                devtool: 'source-map',
+                output: {
+                    path: PATHS.bin,
+                    filename: '[name].[chunkhash].js',
+                    chunkFilename: '[chunkhash].js'
+                }
             },
             conf.setFreeVariable('process.env.NODE_ENV', 'production'),
             conf.extractBundle({
                 name: 'vendor',
                 entries: ['react', 'react-dom']
             }),
-            conf.minify()
+            conf.minify(),
+            conf.extractStyle(PATHS.style),
+            conf.purifyStyle([PATHS.src])
         );
         break;
     default:
@@ -62,6 +70,7 @@ switch (process.env.npm_lifecycle_event) {
             {
                 devtool: 'eval-source-map'
             },
+            conf.setupCss(PATHS.style),
             conf.devServer({
                 host: process.env.HOST,
                 port: process.env.PORT

@@ -1,4 +1,6 @@
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const PurifyCssPlugin = require('purifycss-webpack-plugin');
 
 exports.devServer = function (options) {
     return {
@@ -50,6 +52,58 @@ exports.extractBundle = function (options) {
         plugins: [
             new webpack.optimize.CommonsChunkPlugin({
                 names: [options.name, 'manifest']
+            })
+        ]
+    }
+};
+
+exports.setupCss = function (paths) {
+    return {
+        module: {
+            loaders: [
+                {
+                    test: /\.less$/,
+                    loaders: ['style', 'css', 'less'],
+                    include: paths
+                },
+                {
+                    test: /\.css$/,
+                    loaders: ['style', 'css'],
+                    include: paths
+                }
+            ]
+        }
+    }
+};
+
+exports.extractStyle = function (paths) {
+    return {
+        module: {
+            loaders: [
+                {
+                    test: /\.less$/,
+                    loader: ExtractTextPlugin.extract('style', 'css!less'),
+                    include: paths
+                },
+                {
+                    test: /\.css$/,
+                    loader: ExtractTextPlugin.extract('style', 'css'),
+                    include: paths
+                }
+            ]
+        },
+        plugins: [
+            new ExtractTextPlugin('[name].[chunkhash].css')
+        ]
+    }
+};
+
+exports.purifyStyle = function (paths) {
+    return {
+        plugins: [
+            new PurifyCssPlugin({
+                basePath: process.cwd(),
+                paths: paths
             })
         ]
     }
