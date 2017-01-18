@@ -7,6 +7,7 @@ const conf = require('./conf/config');
 
 const PATHS = {
     src: path.join(__dirname, 'src'),
+    img: path.join(__dirname, 'img'),
     style: [
         path.join(__dirname, 'node_modules', 'purecss'),
         path.join(__dirname, 'src', 'style.less')
@@ -29,8 +30,17 @@ const common = {
             include: PATHS.src,
             loader: 'babel',
             query: {
+                cacheDirectory: true,
                 presets: ['es2015', 'react']
             }
+        }, {
+            test: /\.(jpg|png)$/,
+            loader: 'url?limit=25000',
+            include: PATHS.img
+        }, {
+            test: /\.svg$/,
+            loader: 'file',
+            include: PATHS.img
         }]
     },
     plugins: [
@@ -44,6 +54,7 @@ var config;
 
 switch (process.env.npm_lifecycle_event) {
     case 'build':
+    case 'stats':
         config = merge(
             common,
             {
@@ -78,5 +89,7 @@ switch (process.env.npm_lifecycle_event) {
         );
 }
 
-module.exports = validate(config);
+module.exports = validate(config, {
+    quiet: true
+});
 
