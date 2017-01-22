@@ -7,12 +7,8 @@ const conf = require('./conf/config');
 
 const PATHS = {
     src: path.join(__dirname, 'src'),
-    img: path.join(__dirname, 'img'),
-    style: [
-        path.join(__dirname, 'node_modules', 'purecss'),
-        path.join(__dirname, 'src', 'style.less')
-    ],
-    bin: path.join(__dirname, 'bin')
+    style: path.join(__dirname, 'src/common', 'style.less'),
+    output: path.join(__dirname, 'output')
 };
 
 const common = {
@@ -21,7 +17,7 @@ const common = {
         style: PATHS.style
     },
     output: {
-        path: PATHS.bin,
+        path: PATHS.output,
         filename: '[name].js'
     },
     module: {
@@ -60,7 +56,7 @@ switch (process.env.npm_lifecycle_event) {
             {
                 devtool: 'source-map',
                 output: {
-                    path: PATHS.bin,
+                    path: PATHS.output,
                     filename: '[name].[chunkhash].js',
                     chunkFilename: '[chunkhash].js'
                 }
@@ -81,7 +77,7 @@ switch (process.env.npm_lifecycle_event) {
             {
                 devtool: 'eval-source-map'
             },
-            conf.setupCss(PATHS.style),
+            conf.setupStyle(PATHS.style),
             conf.devServer({
                 host: process.env.HOST,
                 port: process.env.PORT

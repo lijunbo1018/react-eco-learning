@@ -1,16 +1,28 @@
-import React from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import Hello from './contents'
-import src from '../img/all.png'
+import { Provider, connect } from 'react-redux'
+import configureStore, { injectAsyncReducer } from './store'
 
-const root = document.createElement('div');
-document.body.appendChild(root);
+const initialState = {
+    locale: 'zh-CN'
+};
 
-ReactDOM.render(
-    <div>
-        <Hello name="world" />
-        <img className="pure-img" src={src} />
-        <div className="hint" />
-    </div>,
-    root
+const appStore = configureStore(initialState);
+
+const App = () => (
+    <h1>Hello, world</h1>
 );
+
+const initRender = () => {
+    const root = document.createElement('div');
+    document.body.appendChild(root);
+
+    ReactDOM.render(
+        <Provider store={appStore}>
+            <App />
+        </Provider>,
+        root
+    )
+};
+
+initRender();

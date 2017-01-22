@@ -57,7 +57,7 @@ exports.extractBundle = function (options) {
     }
 };
 
-exports.setupCss = function (paths) {
+exports.setupStyle = function (paths) {
     return {
         module: {
             loaders: [
