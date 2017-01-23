@@ -23,7 +23,7 @@ class TopMenu extends Component {
                 </div>
                 <Select value="zh-CN">
                     <Option key="zh-CN">简体中文</Option>
-                    <Option key="en">英文</Option>
+                    <Option key="en">English</Option>
                 </Select>
                 <Menu mode="horizontal" selectedKeys={[this.state.active]} onClick={this.handleClick}>
                     <Item key="index"><Icon type="home" />首页</Item>

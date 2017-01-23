@@ -12,6 +12,11 @@ const PATHS = {
     output: path.join(__dirname, 'output')
 };
 
+var theme = {};
+if (typeof pkg.theme === 'string' && pkg.theme.charAt(0) === '.') {
+    theme = require(pkg.theme)
+}
+
 const common = {
     entry: {
         app: PATHS.src,
@@ -72,7 +77,7 @@ switch (process.env.npm_lifecycle_event) {
             conf.extractStyle([
                 PATHS.style,
                 path.join(__dirname, 'node_modules', 'antd')
-            ]),
+            ], theme),
             conf.purifyStyle([PATHS.src])
         );
         break;
@@ -85,7 +90,7 @@ switch (process.env.npm_lifecycle_event) {
             conf.setupStyle([
                 PATHS.style,
                 path.join(__dirname, 'node_modules', 'antd')
-            ]),
+            ], theme),
             conf.devServer({
                 host: process.env.HOST,
                 port: process.env.PORT

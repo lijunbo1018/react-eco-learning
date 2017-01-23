@@ -57,13 +57,13 @@ exports.extractBundle = function (options) {
     }
 };
 
-exports.setupStyle = function (paths) {
+exports.setupStyle = function (paths, theme) {
     return {
         module: {
             loaders: [
                 {
                     test: /\.less$/,
-                    loaders: ['style', 'css', 'less'],
+                    loaders: ['style', 'css', 'less?{"modifyVars":' + JSON.stringify(theme) + '}'],
                     include: paths
                 },
                 {
@@ -76,13 +76,13 @@ exports.setupStyle = function (paths) {
     }
 };
 
-exports.extractStyle = function (paths) {
+exports.extractStyle = function (paths, theme) {
     return {
         module: {
             loaders: [
                 {
                     test: /\.less$/,
-                    loader: ExtractTextPlugin.extract('style', 'css!less'),
+                    loader: ExtractTextPlugin.extract('style', 'css!less?{"modifyVars":' + JSON.stringify(theme) + '}'),
                     include: paths
                 },
                 {
