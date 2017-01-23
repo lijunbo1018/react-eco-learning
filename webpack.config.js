@@ -4,6 +4,7 @@ const merge = require('webpack-merge');
 const validate = require('webpack-validator');
 
 const conf = require('./conf/config');
+const pkg = require('./package.json');
 
 const PATHS = {
     src: path.join(__dirname, 'src'),
@@ -27,7 +28,8 @@ const common = {
             loader: 'babel',
             query: {
                 cacheDirectory: true,
-                presets: ['es2015', 'react']
+                presets: ['es2015', 'react'],
+                plugins: [['import', { libraryName: 'antd', style: true }]]
             }
         }, {
             test: /\.(jpg|png)$/,
@@ -64,10 +66,13 @@ switch (process.env.npm_lifecycle_event) {
             conf.setFreeVariable('process.env.NODE_ENV', 'production'),
             conf.extractBundle({
                 name: 'vendor',
-                entries: ['react', 'react-dom']
+                entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror')
             }),
             conf.minify(),
-            conf.extractStyle(PATHS.style),
+            conf.extractStyle([
+                PATHS.style,
+                path.join(__dirname, 'node_modules', 'antd')
+            ]),
             conf.purifyStyle([PATHS.src])
         );
         break;
@@ -77,7 +82,10 @@ switch (process.env.npm_lifecycle_event) {
             {
                 devtool: 'eval-source-map'
             },
-            conf.setupStyle(PATHS.style),
+            conf.setupStyle([
+                PATHS.style,
+                path.join(__dirname, 'node_modules', 'antd')
+            ]),
             conf.devServer({
                 host: process.env.HOST,
                 port: process.env.PORT

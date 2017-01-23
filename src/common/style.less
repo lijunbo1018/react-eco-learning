@@ -1,0 +1,27 @@
+@import "~antd/lib/style/themes/default";
+
+.top-menu {
+    padding: 0 20px;
+    font-size: 14px;
+    &:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+    .version {
+        float: left;
+        line-height: 46px;
+        font-size: 30px;
+        font-family: @code-family;
+    }
+    .ant-menu, .ant-select {
+        float: right;
+    }
+    .ant-menu {
+        border-bottom: 0;
+    }
+    .ant-select {
+        width: 80px;
+        margin: 9px 15px;
+    }
+}
