@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Menu, Icon, Select } from 'antd'
+import { Link } from 'react-router'
 
 const Item = Menu.Item;
 const Option = Select.Option;
@@ -8,9 +9,13 @@ class TopMenu extends Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
-        this.state = {
-            active: 'index'
+        let active;
+        try {
+            active= props.routes[1].path
+        } catch (e) {
+            active= 'index'
         }
+        this.state = { active }
     }
     handleClick(e) {
         this.setState({ active: e.key })
@@ -26,9 +31,15 @@ class TopMenu extends Component {
                     <Option key="en">English</Option>
                 </Select>
                 <Menu mode="horizontal" selectedKeys={[this.state.active]} onClick={this.handleClick}>
-                    <Item key="index"><Icon type="home" />首页</Item>
-                    <Item key="sample"><Icon type="appstore-o" />示例</Item>
-                    <Item key="editor"><Icon type="code-o" />编辑器</Item>
+                    <Item key="index">
+                        <Link to="/index"><Icon type="home" />首页</Link>
+                    </Item>
+                    <Item key="sample">
+                        <Link to="/sample"><Icon type="appstore-o" />示例</Link>
+                    </Item>
+                    <Item key="editor">
+                        <Link to="/editor"><Icon type="code-o" />编辑器</Link>
+                    </Item>
                 </Menu>
             </header>
         )

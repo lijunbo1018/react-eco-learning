@@ -7,6 +7,8 @@ export default (
         <Route path="/" component={App}>
             <IndexRedirect to="index" />
             <Route path="index"></Route>
+            <Route path="sample"></Route>
+            <Route path="editor"></Route>
         </Route>
     </Router>
 )

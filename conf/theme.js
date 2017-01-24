@@ -1,3 +1,7 @@
 module.exports = {
-    '@primary-color': '#6d77b8'
+    // Color
+    '@primary-color': '#6d77b8',
+
+    // Input
+    '@input-height-base': '30px'
 };
