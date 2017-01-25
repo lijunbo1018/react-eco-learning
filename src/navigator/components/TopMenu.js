@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Menu, Icon, Select } from 'antd'
 import { Link } from 'react-router'
+import { injectIntl } from 'react-intl'
 import { version } from '../../versions'
 
 const Item = Menu.Item;
@@ -18,6 +19,7 @@ class TopMenu extends Component {
         this.setState({ active: e.key })
     }
     render() {
+        const { intl } = this.props;
         return (
             <header className="top-menu">
                 <div className="version">
@@ -29,13 +31,13 @@ class TopMenu extends Component {
                 </Select>
                 <Menu mode="horizontal" selectedKeys={[this.state.active]} onClick={this.handleClick}>
                     <Item key="index">
-                        <Link to="/index"><Icon type="home" />首页</Link>
+                        <Link to="/index"><Icon type="home" />{intl.formatMessage({id: 'index'})}</Link>
                     </Item>
                     <Item key="sample">
-                        <Link to="/sample"><Icon type="appstore-o" />示例</Link>
+                        <Link to="/sample"><Icon type="appstore-o" />{intl.formatMessage({id: 'sample'})}</Link>
                     </Item>
                     <Item key="editor">
-                        <Link to="/editor"><Icon type="code-o" />编辑器</Link>
+                        <Link to="/editor"><Icon type="code-o" />{intl.formatMessage({id: 'editor'})}</Link>
                     </Item>
                 </Menu>
             </header>
@@ -43,4 +45,4 @@ class TopMenu extends Component {
     }
 }
 
-export default TopMenu
+export default injectIntl(TopMenu)
