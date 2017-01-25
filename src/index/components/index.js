@@ -1,7 +1,8 @@
 import React from 'react'
+import '../index.less'
 
 export const root = () => (
-    <div>
+    <div className="introduction">
         <h1>使用Webpack构建的示例项目</h1>
         <section>
             <h2>试图解决如下问题：</h2>

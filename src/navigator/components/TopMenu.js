@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Menu, Icon, Select } from 'antd'
 import { Link } from 'react-router'
+import { version } from '../../versions'
 
 const Item = Menu.Item;
 const Option = Select.Option;
@@ -20,7 +21,7 @@ class TopMenu extends Component {
         return (
             <header className="top-menu">
                 <div className="version">
-                    <span>iCode</span>
+                    <a href={version.url} target="_blank">{version.name}</a>
                 </div>
                 <Select value="zh-CN">
                     <Option key="zh-CN">简体中文</Option>

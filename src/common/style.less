@@ -1,4 +1,10 @@
 @import "~antd/lib/style/themes/default";
+@import "./utils";
+
+body > .root, .root-container {
+    height: 100%;
+    font-size: 14px;
+}
 
 .top-menu {
     padding: 0 20px;
@@ -28,4 +34,9 @@
     .ant-select-selection__rendered {
         line-height: 28px;
     }
+}
+
+.page-content {
+    .calc(@prop: height, @pixel: 47px);
+    padding: 20px;
 }

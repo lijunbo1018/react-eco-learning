@@ -22,6 +22,7 @@ const getComponent = path => (nextState, callback) => {
 
 const initRender = () => {
     const root = document.createElement('div');
+    root.classList.add('root');
     document.body.appendChild(root);
 
     ReactDOM.render(

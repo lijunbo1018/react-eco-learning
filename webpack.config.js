@@ -50,7 +50,7 @@ const common = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Webpack Explore'
+            title: 'Webpack示例项目'
         })
     ]
 };
@@ -70,14 +70,13 @@ switch (process.env.npm_lifecycle_event) {
                     chunkFilename: '[chunkhash].js'
                 }
             },
-            conf.setFreeVariable('process.env.NODE_ENV', 'production'),
             conf.extractBundle({
                 name: 'vendor',
                 entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror')
             }),
             conf.minify(),
             conf.extractStyle([
-                PATHS.style,
+                PATHS.src,
                 path.join(__dirname, 'node_modules', 'antd')
             ], theme),
             conf.purifyStyle([PATHS.src])
@@ -89,8 +88,9 @@ switch (process.env.npm_lifecycle_event) {
             {
                 devtool: 'eval-source-map'
             },
+            conf.setFreeVariable('process.env.VERSION', 'icode'),
             conf.setupStyle([
-                PATHS.style,
+                PATHS.src,
                 path.join(__dirname, 'node_modules', 'antd')
             ], theme),
             conf.devServer({
