@@ -9,13 +9,9 @@ class TopMenu extends Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
-        let active;
-        try {
-            active= props.routes[1].path
-        } catch (e) {
-            active= 'index'
+        this.state = {
+            active: props.routes[1].path || 'index'
         }
-        this.state = { active }
     }
     handleClick(e) {
         this.setState({ active: e.key })

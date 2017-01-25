@@ -19,8 +19,10 @@ if (typeof pkg.theme === 'string' && pkg.theme.charAt(0) === '.') {
 
 const common = {
     entry: {
-        app: PATHS.src,
-        style: PATHS.style
+        // TODO: clarify difference between string and array
+        // with string, webpack will throw warnings: a dependency to entry module is not allowed
+        app: [PATHS.src],
+        style: [PATHS.style]
     },
     output: {
         path: PATHS.output,
