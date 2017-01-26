@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Menu, Icon, Select } from 'antd'
 import { Link } from 'react-router'
 import { injectIntl } from 'react-intl'
 import { version } from '../../versions'
+import { reloadLocale } from '../../common/global/actions'
 
 const Item = Menu.Item;
 const Option = Select.Option;
@@ -10,26 +12,26 @@ const Option = Select.Option;
 class TopMenu extends Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleNavClick = this.handleNavClick.bind(this);
         this.state = {
             active: props.routes[1].path || 'index'
         }
     }
-    handleClick(e) {
+    handleNavClick(e) {
         this.setState({ active: e.key })
     }
     render() {
-        const { intl } = this.props;
+        const { intl, locale, switchLocale } = this.props;
         return (
             <header className="top-menu">
                 <div className="version">
                     <a href={version.url} target="_blank">{version.name}</a>
                 </div>
-                <Select value="zh-CN">
+                <Select value={locale} onChange={switchLocale}>
                     <Option key="zh-CN">简体中文</Option>
                     <Option key="en">English</Option>
                 </Select>
-                <Menu mode="horizontal" selectedKeys={[this.state.active]} onClick={this.handleClick}>
+                <Menu mode="horizontal" selectedKeys={[this.state.active]} onClick={this.handleNavClick}>
                     <Item key="index">
                         <Link to="/index"><Icon type="home" />{intl.formatMessage({id: 'index'})}</Link>
                     </Item>
@@ -45,4 +47,16 @@ class TopMenu extends Component {
     }
 }
 
-export default injectIntl(TopMenu)
+const mapStateToProps = state => {
+    return {
+        locale: state.locale.locale
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        switchLocale: locale => dispatch(reloadLocale(locale))
+    }
+};
+
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(TopMenu))
