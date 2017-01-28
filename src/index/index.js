@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import '../index.less'
+import './index.less'
 
 const component = ({ locale }) => {
     if (locale === 'en') {

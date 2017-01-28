@@ -95,7 +95,8 @@ switch (process.env.npm_lifecycle_event) {
             conf.minify(),
             conf.extractStyle([
                 PATHS.src,
-                path.join(__dirname, 'node_modules', 'antd')
+                path.join(__dirname, 'node_modules', 'antd'),
+                path.join(__dirname, 'node_modules', 'codemirror')
             ], theme),
             conf.purifyStyle([PATHS.src])
         );
@@ -109,7 +110,8 @@ switch (process.env.npm_lifecycle_event) {
             conf.setFreeVariable('process.env.VERSION', 'icode'),
             conf.setupStyle([
                 PATHS.src,
-                path.join(__dirname, 'node_modules', 'antd')
+                path.join(__dirname, 'node_modules', 'antd'),
+                path.join(__dirname, 'node_modules', 'codemirror')
             ], theme),
             conf.devServer({
                 host: process.env.HOST,

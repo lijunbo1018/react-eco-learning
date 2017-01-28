@@ -11,6 +11,9 @@ module.exports = {
     '@border-radius-base': '2px',
     '@border-radius-sm': '0',
 
+    '@border-color-base': '#d6d6d6',
+    '@border-color-split': '#b8b8b8',
+
     '@icon-url': '\'/font/iconfont\'',
 
     // Input

@@ -6,9 +6,9 @@ export default getComponent => (
     <Router history={browserHistory}>
         <Route path="/" component={App}>
             <IndexRedirect to="index" />
-            <Route path="index" getComponent={getComponent('index/components/index.js')}></Route>
+            <Route path="index" getComponent={getComponent('index/index.js')}></Route>
             <Route path="sample"></Route>
-            <Route path="editor"></Route>
+            <Route path="editor" getComponent={getComponent('editor/editor.js')}></Route>
         </Route>
     </Router>
 )
