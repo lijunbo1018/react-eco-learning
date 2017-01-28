@@ -9,6 +9,7 @@ const pkg = require('./package.json');
 const PATHS = {
     src: path.join(__dirname, 'src'),
     style: path.join(__dirname, 'src/common', 'style.less'),
+    fonts: path.join(__dirname, 'src/common/anticon'),
     output: path.join(__dirname, 'output')
 };
 
@@ -45,7 +46,24 @@ const common = {
         }, {
             test: /\.svg$/,
             loader: 'file',
-            include: PATHS.img
+            include: PATHS.img,
+            exclude: PATHS.fonts
+        }, {
+            test: /\.woff$/,
+            loader: 'url',
+            query: {
+                name: 'font/[name].[ext]',
+                limit: 5000,
+                mimetype: 'application/font-woff'
+            },
+            include: PATHS.fonts
+        }, {
+            test: /\.ttf$|\.eot$|\.svg$/,
+            loader: 'file',
+            query: {
+                name: 'font/[name].[ext]'
+            },
+            include: PATHS.fonts
         }]
     },
     plugins: [
