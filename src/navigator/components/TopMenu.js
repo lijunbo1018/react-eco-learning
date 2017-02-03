@@ -35,9 +35,11 @@ class TopMenu extends Component {
                     <Item key="index">
                         <Link to="/index"><Icon type="home" />{intl.formatMessage({id: 'index'})}</Link>
                     </Item>
-                    <Item key="sample">
-                        <Link to="/sample"><Icon type="appstore-o" />{intl.formatMessage({id: 'sample'})}</Link>
-                    </Item>
+                    {process.env.VERSION !== 'xiaolvyun' &&
+                        <Item key="sample">
+                            <Link to="/sample"><Icon type="appstore-o" />{intl.formatMessage({id: 'sample'})}</Link>
+                        </Item>
+                    }
                     <Item key="editor">
                         <Link to="/editor"><Icon type="code-o" />{intl.formatMessage({id: 'editor'})}</Link>
                     </Item>

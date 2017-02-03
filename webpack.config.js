@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 const merge = require('webpack-merge');
 const validate = require('webpack-validator');
 
@@ -88,6 +89,7 @@ switch (process.env.npm_lifecycle_event) {
                     chunkFilename: '[chunkhash].js'
                 }
             },
+            conf.setFreeVariable('process.env.VERSION', 'xiaolvyun'),
             conf.extractBundle({
                 name: 'vendor',
                 entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror')
@@ -99,6 +101,25 @@ switch (process.env.npm_lifecycle_event) {
                 path.join(__dirname, 'node_modules', 'codemirror')
             ], theme),
             conf.purifyStyle([PATHS.src])
+        );
+        break;
+    case 'debug':
+        config = merge(
+            common,
+            conf.setFreeVariable('process.env.VERSION', 'icode'),
+            conf.setupStyle([
+                PATHS.src,
+                path.join(__dirname, 'node_modules', 'antd'),
+                path.join(__dirname, 'node_modules', 'codemirror')
+            ], theme),
+            {
+                plugins: [
+                    new LiveReloadPlugin({
+                        port: 8080,
+                        appendScriptTag: true
+                    })
+                ]
+            }
         );
         break;
     default:

@@ -5,6 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "start": "webpack-dev-server",
+    "debug": "rm -rf ./output && webpack --watch",
     "build": "rm -rf ./output && webpack",
     "stats": "rm -rf ./output && webpack --profile --json > stats.json",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -33,6 +34,7 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
+    "webpack-livereload-plugin": "^0.10.0",
     "webpack-merge": "^2.3.1",
     "webpack-validator": "^2.3.0"
   },

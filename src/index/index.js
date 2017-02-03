@@ -24,7 +24,7 @@ const component = ({ locale }) => {
         <div className="introduction">
             <h1>使用Webpack构建的示例项目</h1>
             <section>
-                <h2>试图解决如下问题：</h2>
+                <h2>意在解决如下问题：</h2>
                 <ul>
                     <ol>1. ant design不能按需引入</ol>
                     <ol>2. 区分内外版本硬编码逻辑</ol>
