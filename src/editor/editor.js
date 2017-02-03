@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CodeMirror from 'react-codemirror'
-import 'codemirror/mode/javascript/javascript'
+import marked from 'marked'
+import 'codemirror/mode/markdown/markdown'
 import './editor.less'
 
 class Editor extends Component {
@@ -8,7 +9,7 @@ class Editor extends Component {
         super(props);
         this.onChange = this.onChange.bind(this);
         this.state = {
-            code: '// talk is cheap, show me your code'
+            code: '<!--在此输入你的Markdown文本-->\n'
         }
     }
     onChange(code) {
@@ -17,9 +18,17 @@ class Editor extends Component {
     render() {
         const options = {
             lineNumbers: true,
-            mode: 'javascript'
+            mode: 'markdown'
         };
-        return <CodeMirror value={this.state.code} onChange={this.onChange} options={options} />
+        const { code } = this.state;
+        return (
+            <div className="editor-container">
+                <section>
+                    <CodeMirror value={code} onChange={this.onChange} options={options} />
+                </section>
+                <section dangerouslySetInnerHTML={{ __html: marked(code) }} />
+            </div>
+        )
     }
 }
 

@@ -3,3 +3,33 @@
 .ReactCodeMirror, .CodeMirror {
     height: 100%;
 }
+
+.editor-container {
+    height: 100%;
+    &:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+    > section {
+        width: 50%;
+        height: 100%;
+        float: left;
+        overflow: auto;
+        border-right: 1px solid @border-color-base;
+        ol {
+            list-style: decimal inside;
+        }
+        table {
+            border: 1px solid @border-color-base;
+            border-collapse: collapse;
+            th, td {
+                border: 1px solid @border-color-split;
+                padding: 2px 4px;
+            }
+        }
+        &:last-child {
+            padding: 0 10px;
+        }
+    }
+}
