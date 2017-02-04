@@ -1,7 +1,6 @@
 .DS_Store
-
+output/
 .idea/*
-
-bin/
-
 node_modules/
+
+stats.json
