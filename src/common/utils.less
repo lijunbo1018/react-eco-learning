@@ -1,0 +1,6 @@
+.calc(@prop, @percentage: 100%, @pixel) {
+    @{prop}: @percentage;
+    @{prop}: -webkit-calc(~"@{percentage} - @{pixel}");
+    @{prop}: -moz-calc(~"@{percentage} - @{pixel}");
+    @{prop}: calc(~"@{percentage} - @{pixel}");
+}

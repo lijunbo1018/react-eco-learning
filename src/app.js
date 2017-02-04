@@ -1,9 +1,17 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import Hello from './contents'
-import './style.less'
+import { connect } from 'react-redux'
+import { IntlProvider } from 'react-intl'
+import TopMenu from './navigator/components/TopMenu'
 
-ReactDOM.render(
-    <Hello name="world" />,
-    document.getElementById('root')
+const AppRoot = ({ children, routes, locale, messages }) => (
+    <IntlProvider locale={locale} messages={messages}>
+        <div className="root-container">
+            <TopMenu routes={routes} />
+            <div className="page-content">
+                {children}
+            </div>
+        </div>
+    </IntlProvider>
 );
+
+export default connect(state => state.locale)(AppRoot)

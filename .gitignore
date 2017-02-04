@@ -1,6 +1,6 @@
 .DS_Store
 output/
-.idea/*
 node_modules/
+.idea/
 
 stats.json
