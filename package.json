@@ -5,12 +5,15 @@
   "main": "src/app.js",
   "repository": {
     "type": "git",
-    "url": "http://github.com/lijunbo1018/webpack-explore.git"
+    "url": "https://github.com/lijunbo1018/webpack-explore.git"
   },
   "scripts": {
     "start": "webpack-dev-server",
+    "start:enterprise": "webpack-dev-server --env.target enterprise",
     "debug": "rm -rf ./output && webpack --watch",
+    "debug:enterprise": "rm -rf ./output && webpack --watch --env.target enterprise",
     "build": "rm -rf ./output && webpack",
+    "build:enterprise": "rm -rf ./output && webpack --env.target enterprise",
     "stats": "rm -rf ./output && webpack --profile --json > stats.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

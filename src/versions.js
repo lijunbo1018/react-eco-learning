@@ -3,15 +3,23 @@ const icode = {
     url: 'http://icode.baidu.com'
 };
 
-const xiaolvyun = {
+const enterprise = {
     name: '效率云',
     url: 'https://xiaolvyun.baidu.com'
 };
 
+const google = {
+    name: 'Google',
+    url: 'https://www.google.com.hk'
+};
+
 let conf;
 switch (process.env.VERSION) {
-    case 'xiaolvyun':
-        conf = xiaolvyun;
+    case 'enterprise':
+        conf = enterprise;
+        break;
+    case 'google':
+        conf = google;
         break;
     default:
         conf = icode;

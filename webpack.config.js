@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const merge = require('webpack-merge');
 
-const conf = require('./conf/config');
+const parts = require('./conf/webpack.parts');
 const pkg = require('./package.json');
 
 const PATHS = {
@@ -71,71 +71,81 @@ const common = {
     ]
 };
 
-var config;
+var generateConfig;
 
-switch (process.env.npm_lifecycle_event) {
+var lifecycle = process.env.npm_lifecycle_event || '';
+switch (lifecycle.split(':')[0]) {
     case 'build':
     case 'stats':
-        config = merge(
-            common,
-            {
-                devtool: 'source-map',
-                output: {
-                    path: PATHS.output,
-                    filename: '[name].[chunkhash].js',
-                    chunkFilename: '[chunkhash].js'
-                }
-            },
-            conf.setFreeVariable('process.env.VERSION', 'xiaolvyun'),
-            conf.extractBundle({
-                name: 'vendor',
-                entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror')
-            }),
-            conf.minify(),
-            conf.extractStyle([
-                PATHS.src,
-                path.join(__dirname, 'node_modules', 'antd'),
-                path.join(__dirname, 'node_modules', 'codemirror')
-            ], theme)
-        );
+        generateConfig = function (env) {
+            return merge(
+                common,
+                {
+                    devtool: 'source-map',
+                    output: {
+                        path: PATHS.output,
+                        filename: '[name].[chunkhash].js',
+                        chunkFilename: '[chunkhash].js'
+                    }
+                },
+                parts.setFreeVariable('process.env.VERSION', env.target),
+                parts.extractBundle({
+                    name: 'vendor',
+                    entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror')
+                }),
+                parts.minify(),
+                parts.extractStyle([
+                    PATHS.src,
+                    path.join(__dirname, 'node_modules', 'antd'),
+                    path.join(__dirname, 'node_modules', 'codemirror')
+                ], theme)
+            );
+        };
         break;
     case 'debug':
-        config = merge(
-            common,
-            conf.setFreeVariable('process.env.VERSION', 'icode'),
-            conf.setupStyle([
-                PATHS.src,
-                path.join(__dirname, 'node_modules', 'antd'),
-                path.join(__dirname, 'node_modules', 'codemirror')
-            ], theme),
-            {
-                plugins: [
-                    new LiveReloadPlugin({
-                        port: 8080,
-                        appendScriptTag: true
-                    })
-                ]
-            }
-        );
+        generateConfig = function (env) {
+            return merge(
+                common,
+                parts.setFreeVariable('process.env.VERSION', env.target),
+                parts.setupStyle([
+                    PATHS.src,
+                    path.join(__dirname, 'node_modules', 'antd'),
+                    path.join(__dirname, 'node_modules', 'codemirror')
+                ], theme),
+                {
+                    plugins: [
+                        new LiveReloadPlugin({
+                            port: process.env.PORT || 8080,
+                            appendScriptTag: true
+                        })
+                    ]
+                }
+            );
+        };
         break;
     default:
-        config = merge(
-            common,
-            {
-                devtool: 'eval-source-map'
-            },
-            conf.setFreeVariable('process.env.VERSION', 'icode'),
-            conf.setupStyle([
-                PATHS.src,
-                path.join(__dirname, 'node_modules', 'antd'),
-                path.join(__dirname, 'node_modules', 'codemirror')
-            ], theme),
-            conf.devServer({
-                host: process.env.HOST,
-                port: process.env.PORT
-            })
-        );
+        generateConfig = function (env) {
+            return merge(
+                common,
+                {
+                    devtool: 'eval-source-map'
+                },
+                parts.setFreeVariable('process.env.VERSION', env.target),
+                parts.setupStyle([
+                    PATHS.src,
+                    path.join(__dirname, 'node_modules', 'antd'),
+                    path.join(__dirname, 'node_modules', 'codemirror')
+                ], theme),
+                parts.devServer({
+                    host: process.env.HOST,
+                    port: process.env.PORT
+                })
+            );
+        };
 }
 
-module.exports = config;
+module.exports = function (env) {
+    env = env || {};
+    return generateConfig(env);
+};
 
