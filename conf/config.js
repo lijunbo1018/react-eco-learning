@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const PurifyCssPlugin = require('purifycss-webpack-plugin');
 
 exports.devServer = function (options) {
     return {
@@ -60,15 +59,24 @@ exports.extractBundle = function (options) {
 exports.setupStyle = function (paths, theme) {
     return {
         module: {
-            loaders: [
+            rules: [
                 {
                     test: /\.less$/,
-                    loaders: ['style', 'css', 'less?{"modifyVars":' + JSON.stringify(theme) + '}'],
+                    use: [
+                        'style-loader',
+                        'css-loader',
+                        {
+                            loader: 'less-loader',
+                            options: {
+                                modifyVars: theme
+                            }
+                        }
+                    ],
                     include: paths
                 },
                 {
                     test: /\.css$/,
-                    loaders: ['style', 'css'],
+                    use: ['style-loader', 'css-loader'],
                     include: paths
                 }
             ]
@@ -79,32 +87,35 @@ exports.setupStyle = function (paths, theme) {
 exports.extractStyle = function (paths, theme) {
     return {
         module: {
-            loaders: [
+            rules: [
                 {
                     test: /\.less$/,
-                    loader: ExtractTextPlugin.extract('style', 'css!less?{"modifyVars":' + JSON.stringify(theme) + '}'),
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            'css-loader',
+                            {
+                                loader: 'less-loader',
+                                options: {
+                                    modifyVars: theme
+                                }
+                            }
+                        ]
+                    }),
                     include: paths
                 },
                 {
                     test: /\.css$/,
-                    loader: ExtractTextPlugin.extract('style', 'css'),
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: 'css-loader'
+                    }),
                     include: paths
                 }
             ]
         },
         plugins: [
             new ExtractTextPlugin('[name].[chunkhash].css')
-        ]
-    }
-};
-
-exports.purifyStyle = function (paths) {
-    return {
-        plugins: [
-            new PurifyCssPlugin({
-                basePath: process.cwd(),
-                paths: paths
-            })
         ]
     }
 };

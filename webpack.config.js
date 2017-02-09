@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const merge = require('webpack-merge');
-const validate = require('webpack-validator');
 
 const conf = require('./conf/config');
 const pkg = require('./package.json');
@@ -21,38 +20,36 @@ if (typeof pkg.theme === 'string' && pkg.theme.charAt(0) === '.') {
 
 const common = {
     entry: {
-        // TODO: clarify difference between string and array
-        // with string, webpack will throw warnings: a dependency to entry module is not allowed
-        app: [PATHS.src],
-        style: [PATHS.style]
+        app: PATHS.src,
+        style: PATHS.style
     },
     output: {
         path: PATHS.output,
         filename: '[name].js'
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.js$/,
             include: PATHS.src,
-            loader: 'babel',
-            query: {
+            loader: 'babel-loader',
+            options: {
                 cacheDirectory: true,
                 presets: ['es2015', 'react'],
                 plugins: [['import', { libraryName: 'antd', style: true }]]
             }
         }, {
             test: /\.(jpg|png)$/,
-            loader: 'url?limit=25000',
+            loader: 'url-loader?limit=25000',
             include: PATHS.img
         }, {
             test: /\.svg$/,
-            loader: 'file',
+            loader: 'file-loader',
             include: PATHS.img,
             exclude: PATHS.fonts
         }, {
             test: /\.woff$/,
-            loader: 'url',
-            query: {
+            loader: 'url-loader',
+            options: {
                 name: 'font/[name].[ext]',
                 limit: 5000,
                 mimetype: 'application/font-woff'
@@ -60,8 +57,8 @@ const common = {
             include: PATHS.fonts
         }, {
             test: /\.ttf$|\.eot$|\.svg$/,
-            loader: 'file',
-            query: {
+            loader: 'file-loader',
+            options: {
                 name: 'font/[name].[ext]'
             },
             include: PATHS.fonts
@@ -99,8 +96,7 @@ switch (process.env.npm_lifecycle_event) {
                 PATHS.src,
                 path.join(__dirname, 'node_modules', 'antd'),
                 path.join(__dirname, 'node_modules', 'codemirror')
-            ], theme),
-            conf.purifyStyle([PATHS.src])
+            ], theme)
         );
         break;
     case 'debug':
@@ -141,7 +137,5 @@ switch (process.env.npm_lifecycle_event) {
         );
 }
 
-module.exports = validate(config, {
-    quiet: true
-});
+module.exports = config;
 
