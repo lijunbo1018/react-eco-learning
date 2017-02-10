@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const merge = require('webpack-merge');
+const glob = require('glob');
 
 const parts = require('./conf/webpack.parts');
 const pkg = require('./package.json');
@@ -83,7 +84,7 @@ var lifecycle = process.env.npm_lifecycle_event || '';
 switch (lifecycle.split(':')[0]) {
     case 'build':
     case 'stats':
-        generateConfig = function (env) {
+        generateConfig = function () {
             return merge(
                 common,
                 {
@@ -94,24 +95,23 @@ switch (lifecycle.split(':')[0]) {
                         chunkFilename: '[chunkhash].js'
                     }
                 },
-                parts.setFreeVariable('process.env.VERSION', env.target),
                 parts.extractBundle({
                     name: 'vendor',
                     entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror')
                 }),
                 parts.minify(),
-                parts.extractStyle(STYLE_PATHS, theme)
-                //parts.purifyCss({
-                //    paths: glob.sync(path.join(PATHS.src, '**', '*'))
-                //})
+                parts.extractStyle(STYLE_PATHS, theme),
+                parts.purifyCss({
+                    paths: glob.sync(path.join(PATHS.src, '**', '*.less')),
+                    moduleExtensions: ['.js', '.html']
+                })
             );
         };
         break;
     case 'debug':
-        generateConfig = function (env) {
+        generateConfig = function () {
             return merge(
                 common,
-                parts.setFreeVariable('process.env.VERSION', env.target),
                 parts.setupStyle(STYLE_PATHS, theme),
                 {
                     plugins: [
@@ -125,13 +125,12 @@ switch (lifecycle.split(':')[0]) {
         };
         break;
     default:
-        generateConfig = function (env) {
+        generateConfig = function () {
             return merge(
                 common,
                 {
                     devtool: 'eval-source-map'
                 },
-                parts.setFreeVariable('process.env.VERSION', env.target),
                 parts.setupStyle(STYLE_PATHS, theme),
                 parts.devServer({
                     host: process.env.HOST,
@@ -143,6 +142,9 @@ switch (lifecycle.split(':')[0]) {
 
 module.exports = function (env) {
     env = env || {};
-    return generateConfig(env);
+    return merge(
+        generateConfig(),
+        parts.setFreeVariable('process.env.VERSION', env.target)
+    );
 };
 

@@ -124,7 +124,11 @@ exports.extractStyle = function (paths, theme) {
 exports.purifyCss = function (options) {
     return {
         plugins: [
-            new PurifyCssPlugin({ paths: options.paths })
+            new PurifyCssPlugin({
+                paths: options.paths,
+                moduleExtensions: options.moduleExtensions,
+                minimize: true
+            })
         ]
     }
 };
