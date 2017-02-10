@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const PurifyCssPlugin = require('purifycss-webpack');
 
 exports.devServer = function (options) {
     return {
@@ -116,6 +117,14 @@ exports.extractStyle = function (paths, theme) {
         },
         plugins: [
             new ExtractTextPlugin('[name].[chunkhash].css')
+        ]
+    }
+};
+
+exports.purifyCss = function (options) {
+    return {
+        plugins: [
+            new PurifyCssPlugin({ paths: options.paths })
         ]
     }
 };

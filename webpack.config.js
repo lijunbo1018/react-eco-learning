@@ -13,6 +13,12 @@ const PATHS = {
     output: path.join(__dirname, 'output')
 };
 
+const STYLE_PATHS= [
+    PATHS.src,
+    path.join(__dirname, 'node_modules', 'antd'),
+    path.join(__dirname, 'node_modules', 'codemirror')
+];
+
 var theme = {};
 if (typeof pkg.theme === 'string' && pkg.theme.charAt(0) === '.') {
     theme = require(pkg.theme)
@@ -94,11 +100,10 @@ switch (lifecycle.split(':')[0]) {
                     entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror')
                 }),
                 parts.minify(),
-                parts.extractStyle([
-                    PATHS.src,
-                    path.join(__dirname, 'node_modules', 'antd'),
-                    path.join(__dirname, 'node_modules', 'codemirror')
-                ], theme)
+                parts.extractStyle(STYLE_PATHS, theme)
+                //parts.purifyCss({
+                //    paths: glob.sync(path.join(PATHS.src, '**', '*'))
+                //})
             );
         };
         break;
@@ -107,11 +112,7 @@ switch (lifecycle.split(':')[0]) {
             return merge(
                 common,
                 parts.setFreeVariable('process.env.VERSION', env.target),
-                parts.setupStyle([
-                    PATHS.src,
-                    path.join(__dirname, 'node_modules', 'antd'),
-                    path.join(__dirname, 'node_modules', 'codemirror')
-                ], theme),
+                parts.setupStyle(STYLE_PATHS, theme),
                 {
                     plugins: [
                         new LiveReloadPlugin({
@@ -131,11 +132,7 @@ switch (lifecycle.split(':')[0]) {
                     devtool: 'eval-source-map'
                 },
                 parts.setFreeVariable('process.env.VERSION', env.target),
-                parts.setupStyle([
-                    PATHS.src,
-                    path.join(__dirname, 'node_modules', 'antd'),
-                    path.join(__dirname, 'node_modules', 'codemirror')
-                ], theme),
+                parts.setupStyle(STYLE_PATHS, theme),
                 parts.devServer({
                     host: process.env.HOST,
                     port: process.env.PORT
