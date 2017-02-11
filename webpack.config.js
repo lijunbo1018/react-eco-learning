@@ -41,8 +41,13 @@ const common = {
             loader: 'babel-loader',
             options: {
                 cacheDirectory: true,
-                presets: ['es2015', 'react'],
-                plugins: [['import', { libraryName: 'antd', style: true }]]
+                presets: [
+                    ['es2015', { modules: false } ],
+                    'react'
+                ],
+                plugins: [
+                    ['import', { libraryName: 'antd', style: true }]
+                ]
             }
         }, {
             test: /\.(jpg|png)$/,
@@ -95,10 +100,15 @@ switch (lifecycle.split(':')[0]) {
                         chunkFilename: '[chunkhash].js'
                     }
                 },
-                parts.extractBundle({
-                    name: 'vendor',
-                    entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror')
-                }),
+                parts.extractBundle([
+                    {
+                        name: 'vendor',
+                        entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror')
+                    },
+                    {
+                        name: 'manifest'
+                    }
+                ]),
                 parts.minify(),
                 parts.extractStyle(STYLE_PATHS, theme),
                 parts.purifyCss({

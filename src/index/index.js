@@ -15,6 +15,7 @@ const component = ({ locale }) => {
                         <ol>3. The file "require-conf.js" is increasing, RequireJS could be replaced</ol>
                         <ol>4. Package and compress assets by directory is not reasonable</ol>
                         <ol>5. Customize ant design theme in an elegant manner</ol>
+                        <ol><em>6. Take advantage of powerful Webpack ecosystem</em></ol>
                     </ul>
                 </section>
             </div>
@@ -31,6 +32,7 @@ const component = ({ locale }) => {
                     <ol>3. require-conf.js文件日渐变大，替换RequireJS</ol>
                     <ol>4. 按目录打包压缩静态资源不科学</ol>
                     <ol>5. 更好地自定义ant design主题</ol>
+                    <ol><em>6. 利用强大的Webpack生态</em></ol>
                 </ul>
             </section>
         </div>

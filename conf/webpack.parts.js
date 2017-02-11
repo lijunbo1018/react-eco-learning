@@ -43,15 +43,21 @@ exports.setFreeVariable = function (key, value) {
     }
 };
 
-exports.extractBundle = function (options) {
+exports.extractBundle = function (bundles) {
     const entry = {};
-    entry[options.name] = options.entries;
+    const names = [];
+    bundles.forEach(function (bundle) {
+        if (bundle.entries) {
+            entry[bundle.name] = bundle.entries
+        }
+        names.push(bundle.name)
+    });
 
     return {
         entry: entry,
         plugins: [
             new webpack.optimize.CommonsChunkPlugin({
-                names: [options.name, 'manifest']
+                names: names
             })
         ]
     }
