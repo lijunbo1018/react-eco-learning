@@ -68,7 +68,7 @@ const common = {
             },
             include: PATHS.fonts
         }, {
-            test: /\.ttf$|\.eot$|\.svg$/,
+            test: /\.(ttf|eot|svg)$/,
             loader: 'file-loader',
             options: {
                 name: 'font/[name].[ext]'

@@ -6,6 +6,7 @@ import { addLocaleData } from 'react-intl'
 import zh from 'react-intl/locale-data/zh'
 import configureRouter from './router'
 import configureStore, { injectAsyncReducer } from './store'
+import './common/anticon'
 
 const initLocale = new Promise((resolve, reject) => {
     addLocaleData([...zh]);
@@ -27,8 +28,8 @@ initLocale.then(locale => {
     const appStore = configureStore({ locale });
 
     const getComponent = path => (nextState, callback) => {
-        require([`./${path}`], component => {
-            const { root, name, reducer } = component;
+        require(`bundle-loader!./${path}/route`)(module => {
+            const { root, name, reducer } = module;
             if (name && typeof reducer === 'function') {
                 injectAsyncReducer(appStore, name, reducer)
             }
