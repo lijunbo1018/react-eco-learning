@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import './index.less'
 
-const component = ({ locale }) => {
+const Index = ({ locale }) => {
     if (locale === 'en') {
         return (
             <div className="introduction">
@@ -39,4 +39,4 @@ const component = ({ locale }) => {
     )
 };
 
-export const root = connect(state => state.locale)(component);
+export const root = connect(state => state.locale)(Index);
