@@ -10,7 +10,7 @@ const switchLocale = locale => {
 };
 
 export const reloadLocale = locale => dispatch => {
-    require([`../../i18n/messages_${locale}`], module => {
+    require(`bundle-loader!../../i18n/messages_${locale}`)(module => {
         window.localStorage.setItem('ICODE_LOCALE_PREFERENCE', locale);
         dispatch(switchLocale({
             locale,

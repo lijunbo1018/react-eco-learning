@@ -12,7 +12,7 @@ const initLocale = new Promise((resolve, reject) => {
     const preference = window.localStorage.getItem('ICODE_LOCALE_PREFERENCE');
     const locale = (preference === 'en') ? preference : 'zh-CN';
     try {
-        require([`./i18n/messages_${locale}`], module => {
+        require(`bundle-loader!./i18n/messages_${locale}`)(module => {
             resolve({
                 locale,
                 messages: module.default
