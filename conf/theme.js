@@ -17,5 +17,8 @@ module.exports = {
     '@icon-url': '\'/font/iconfont\'',
 
     // Input
-    '@input-height-base': '30px'
+    '@input-height-base': '30px',
+
+    // Button
+    '@btn-padding-base': '5px 15px'
 };
