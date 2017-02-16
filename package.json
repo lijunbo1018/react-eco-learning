@@ -9,11 +9,11 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "start:enterprise": "webpack-dev-server --env.target enterprise",
+    "start:google": "webpack-dev-server --env.target google",
     "debug": "rm -rf ./output && webpack --watch",
-    "debug:enterprise": "rm -rf ./output && webpack --watch --env.target enterprise",
+    "debug:google": "rm -rf ./output && webpack --watch --env.target google",
     "build": "rm -rf ./output && webpack",
-    "build:enterprise": "rm -rf ./output && webpack --env.target enterprise",
+    "build:google": "rm -rf ./output && webpack --env.target google",
     "stats": "rm -rf ./output && webpack --profile --json > stats.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

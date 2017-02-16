@@ -35,7 +35,7 @@ class TopMenu extends Component {
                     <Item key="index">
                         <Link to="/index"><Icon type="home" />{intl.formatMessage({id: 'index'})}</Link>
                     </Item>
-                    {process.env.VERSION !== 'enterprise' &&
+                    {process.env.VERSION !== 'google' &&
                         <Item key="sample">
                             <Link to="/sample"><Icon type="appstore-o" />{intl.formatMessage({id: 'sample'})}</Link>
                         </Item>
