@@ -90,6 +90,7 @@ switch (lifecycle.split(':')[0]) {
     case 'build':
     case 'stats':
         generateConfig = function () {
+            const dependencies = Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror');
             return merge(
                 common,
                 {
@@ -102,8 +103,12 @@ switch (lifecycle.split(':')[0]) {
                 },
                 parts.extractBundle([
                     {
-                        name: 'vendor',
-                        entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror')
+                        name: 'vendor1',
+                        entries: dependencies.filter(dep => dep.indexOf('codemirror') >= 0 || dep.indexOf('react') < 0)
+                    },
+                    {
+                        name: 'vendor2',
+                        entries: dependencies.filter(dep => dep.indexOf('codemirror') < 0 && dep.indexOf('react') >= 0)
                     },
                     {
                         name: 'manifest'
