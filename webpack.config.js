@@ -14,8 +14,8 @@ const PATHS = {
     output: path.join(__dirname, 'output')
 };
 
-const STYLE_PATHS= [
-    PATHS.src,
+const GLOBAL_STYLES = [
+    path.join(__dirname, 'src/common'),
     path.join(__dirname, 'node_modules', 'antd'),
     path.join(__dirname, 'node_modules', 'codemirror')
 ];
@@ -115,7 +115,7 @@ switch (lifecycle.split(':')[0]) {
                     }
                 ]),
                 parts.minify(),
-                parts.extractStyle(STYLE_PATHS, theme),
+                parts.extractStyle(PATHS.src, GLOBAL_STYLES, theme),
                 parts.purifyCss({
                     paths: glob.sync(path.join(PATHS.src, '**', '*.less')),
                     moduleExtensions: ['.js', '.html']
@@ -127,7 +127,7 @@ switch (lifecycle.split(':')[0]) {
         generateConfig = function () {
             return merge(
                 common,
-                parts.setupStyle(STYLE_PATHS, theme),
+                parts.setupStyle(PATHS.src, GLOBAL_STYLES, theme),
                 {
                     plugins: [
                         new LiveReloadPlugin({
@@ -146,7 +146,7 @@ switch (lifecycle.split(':')[0]) {
                 {
                     devtool: 'eval-source-map'
                 },
-                parts.setupStyle(STYLE_PATHS, theme),
+                parts.setupStyle(PATHS.src, GLOBAL_STYLES, theme),
                 parts.devServer({
                     host: process.env.HOST,
                     port: process.env.PORT

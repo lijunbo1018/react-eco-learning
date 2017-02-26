@@ -63,10 +63,31 @@ exports.extractBundle = function (bundles) {
     }
 };
 
-exports.setupStyle = function (paths, theme) {
+exports.setupStyle = function (paths, globals, theme) {
     return {
         module: {
             rules: [
+                {
+                    test: /\.less$/,
+                    use: [
+                        'style-loader',
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                modules: true,
+                                localIdentName: '[name]--[local]-[hash:base64:5]'
+                            }
+                        },
+                        {
+                            loader: 'less-loader',
+                            options: {
+                                modifyVars: theme
+                            }
+                        }
+                    ],
+                    include: paths,
+                    exclude: globals
+                },
                 {
                     test: /\.less$/,
                     use: [
@@ -79,22 +100,60 @@ exports.setupStyle = function (paths, theme) {
                             }
                         }
                     ],
-                    include: paths
+                    include: globals
+                },
+                {
+                    test: /\.css$/,
+                    use: [
+                        'style-loader',
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                modules: true,
+                                localIdentName: '[name]--[local]-[hash:base64:5]'
+                            }
+                        }
+                    ],
+                    include: paths,
+                    exclude: globals
                 },
                 {
                     test: /\.css$/,
                     use: ['style-loader', 'css-loader'],
-                    include: paths
+                    include: globals
                 }
             ]
         }
     }
 };
 
-exports.extractStyle = function (paths, theme) {
+exports.extractStyle = function (paths, globals, theme) {
     return {
         module: {
             rules: [
+                {
+                    test: /\.less$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    modules: true,
+                                    localIdentName: '[name]--[local]-[hash:base64:5]'
+                                }
+                            },
+                            {
+                                loader: 'less-loader',
+                                options: {
+                                    modifyVars: theme
+                                }
+                            }
+                        ]
+                    }),
+                    include: paths,
+                    exclude: globals
+                },
                 {
                     test: /\.less$/,
                     use: ExtractTextPlugin.extract({
@@ -109,7 +168,25 @@ exports.extractStyle = function (paths, theme) {
                             }
                         ]
                     }),
-                    include: paths
+                    include: globals
+                },
+                {
+                    test: /\.css$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    modules: true,
+                                    localIdentName: '[name]--[local]-[hash:base64:5]'
+
+                                }
+                            }
+                        ]
+                    }),
+                    include: paths,
+                    exclude: globals
                 },
                 {
                     test: /\.css$/,
@@ -117,7 +194,7 @@ exports.extractStyle = function (paths, theme) {
                         fallback: 'style-loader',
                         use: 'css-loader'
                     }),
-                    include: paths
+                    include: globals
                 }
             ]
         },
