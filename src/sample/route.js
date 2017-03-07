@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, InputNumber, Switch, Slider, Select, DatePicker, Button } from 'antd'
+import { Form, InputNumber, Switch, Slider, Select, Button } from 'antd'
 import { injectIntl } from 'react-intl'
 
 const Item = Form.Item;
@@ -29,9 +29,6 @@ const Samples = ({ intl }) => {
                     <Option value="2">Option 2</Option>
                     <Option value="3">Option 3</Option>
                 </Select>
-            </Item>
-            <Item {...formItemLayout} label={intl.formatMessage({id: 'datePicker'})}>
-                <DatePicker size="default" style={{ width: 200 }} />
             </Item>
             <Item wrapperCol={{ span: 12, offset: 6 }}>
                 <Button type="primary" size="default">{intl.formatMessage({id: 'confirm'})}</Button>

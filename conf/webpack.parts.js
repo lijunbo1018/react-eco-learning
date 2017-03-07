@@ -1,16 +1,16 @@
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const PurifyCssPlugin = require('purifycss-webpack');
+import webpack from 'webpack'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import PurifyCssPlugin from 'purifycss-webpack'
 
-exports.devServer = function (options) {
+export const devServer = ({ host, port }) => {
     return {
         devServer: {
             historyApiFallback: true,
             hot: true,
             inline: true,
             stats: 'errors-only',
-            host: options.host,
-            port: options.port
+            host,
+            port
         },
         plugins: [
             new webpack.HotModuleReplacementPlugin({
@@ -20,7 +20,7 @@ exports.devServer = function (options) {
     }
 };
 
-exports.minify = function () {
+export const minify = () => {
     return {
         plugins: [
             new webpack.optimize.UglifyJsPlugin({
@@ -33,7 +33,7 @@ exports.minify = function () {
     }
 };
 
-exports.setFreeVariable = function (key, value) {
+export const setFreeVariable = (key, value) => {
     const env = {};
     env[key] = JSON.stringify(value);
     return {
@@ -43,7 +43,7 @@ exports.setFreeVariable = function (key, value) {
     }
 };
 
-exports.extractBundle = function (bundles) {
+export const extractBundle = bundles => {
     const entry = {};
     const names = [];
     bundles.forEach(function (bundle) {
@@ -54,16 +54,16 @@ exports.extractBundle = function (bundles) {
     });
 
     return {
-        entry: entry,
+        entry,
         plugins: [
             new webpack.optimize.CommonsChunkPlugin({
-                names: names
+                names
             })
         ]
     }
 };
 
-exports.setupStyle = function (paths, globals, theme) {
+export const setupStyle = (paths, globals, theme) => {
     return {
         module: {
             rules: [
@@ -127,7 +127,7 @@ exports.setupStyle = function (paths, globals, theme) {
     }
 };
 
-exports.extractStyle = function (paths, globals, theme) {
+export const extractStyle = (paths, globals, theme) => {
     return {
         module: {
             rules: [
@@ -204,12 +204,12 @@ exports.extractStyle = function (paths, globals, theme) {
     }
 };
 
-exports.purifyCss = function (options) {
+export const purifyCss = ({ paths, moduleExtensions }) => {
     return {
         plugins: [
             new PurifyCssPlugin({
-                paths: options.paths,
-                moduleExtensions: options.moduleExtensions,
+                paths,
+                moduleExtensions,
                 minimize: true
             })
         ]

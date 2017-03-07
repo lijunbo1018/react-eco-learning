@@ -1,11 +1,11 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
-const merge = require('webpack-merge');
-const glob = require('glob');
+import path from 'path'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import LiveReloadPlugin from 'webpack-livereload-plugin'
+import merge from 'webpack-merge'
+import glob from 'glob'
 
-const parts = require('./conf/webpack.parts');
-const pkg = require('./package.json');
+import * as parts from './conf/webpack.parts'
+import pkg from './package.json'
 
 const PATHS = {
     src: path.join(__dirname, 'src'),
@@ -85,11 +85,11 @@ const common = {
 
 var generateConfig;
 
-var lifecycle = process.env.npm_lifecycle_event || '';
+const lifecycle = process.env.npm_lifecycle_event || '';
 switch (lifecycle.split(':')[0]) {
     case 'build':
     case 'stats':
-        generateConfig = function () {
+        generateConfig = () => {
             const dependencies = Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror');
             return merge(
                 common,
@@ -124,42 +124,35 @@ switch (lifecycle.split(':')[0]) {
         };
         break;
     case 'debug':
-        generateConfig = function () {
-            return merge(
-                common,
-                parts.setupStyle(PATHS.src, GLOBAL_STYLES, theme),
-                {
-                    plugins: [
-                        new LiveReloadPlugin({
-                            port: process.env.PORT || 8080,
-                            appendScriptTag: true
-                        })
-                    ]
-                }
-            );
-        };
+        generateConfig = () => merge(
+            common,
+            parts.setupStyle(PATHS.src, GLOBAL_STYLES, theme),
+            {
+                plugins: [
+                    new LiveReloadPlugin({
+                        port: process.env.PORT || 8080,
+                        appendScriptTag: true
+                    })
+                ]
+            }
+        );
         break;
     default:
-        generateConfig = function () {
-            return merge(
-                common,
-                {
-                    devtool: 'eval-source-map'
-                },
-                parts.setupStyle(PATHS.src, GLOBAL_STYLES, theme),
-                parts.devServer({
-                    host: process.env.HOST,
-                    port: process.env.PORT
-                })
-            );
-        };
+        generateConfig = () => merge(
+            common,
+            {
+                devtool: 'eval-source-map'
+            },
+            parts.setupStyle(PATHS.src, GLOBAL_STYLES, theme),
+            parts.devServer({
+                host: process.env.HOST,
+                port: process.env.PORT
+            })
+        );
 }
 
-module.exports = function (env) {
-    env = env || {};
-    return merge(
-        generateConfig(),
-        parts.setFreeVariable('process.env.VERSION', env.target)
-    );
-};
+export default (env = {}) => merge(
+    generateConfig(),
+    parts.setFreeVariable('process.env.VERSION', env.target)
+)
 
