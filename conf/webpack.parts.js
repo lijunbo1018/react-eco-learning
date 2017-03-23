@@ -63,7 +63,7 @@ export const extractBundle = bundles => {
     }
 };
 
-export const setupStyle = (paths, globals, theme) => {
+export const setupStyle = (modules, globals, theme) => {
     return {
         module: {
             rules: [
@@ -85,7 +85,7 @@ export const setupStyle = (paths, globals, theme) => {
                             }
                         }
                     ],
-                    include: paths,
+                    include: modules,
                     exclude: globals
                 },
                 {
@@ -114,7 +114,7 @@ export const setupStyle = (paths, globals, theme) => {
                             }
                         }
                     ],
-                    include: paths,
+                    include: modules,
                     exclude: globals
                 },
                 {
@@ -127,13 +127,16 @@ export const setupStyle = (paths, globals, theme) => {
     }
 };
 
-export const extractStyle = (paths, globals, theme) => {
+export const extractStyle = (modules, globals, theme) => {
+    const plugin = new ExtractTextPlugin({
+        filename: '[name].[chunkhash].css'
+    });
     return {
         module: {
             rules: [
                 {
                     test: /\.less$/,
-                    use: ExtractTextPlugin.extract({
+                    use: plugin.extract({
                         fallback: 'style-loader',
                         use: [
                             {
@@ -151,12 +154,12 @@ export const extractStyle = (paths, globals, theme) => {
                             }
                         ]
                     }),
-                    include: paths,
+                    include: modules,
                     exclude: globals
                 },
                 {
                     test: /\.less$/,
-                    use: ExtractTextPlugin.extract({
+                    use: plugin.extract({
                         fallback: 'style-loader',
                         use: [
                             'css-loader',
@@ -172,7 +175,7 @@ export const extractStyle = (paths, globals, theme) => {
                 },
                 {
                     test: /\.css$/,
-                    use: ExtractTextPlugin.extract({
+                    use: plugin.extract({
                         fallback: 'style-loader',
                         use: [
                             {
@@ -185,12 +188,12 @@ export const extractStyle = (paths, globals, theme) => {
                             }
                         ]
                     }),
-                    include: paths,
+                    include: modules,
                     exclude: globals
                 },
                 {
                     test: /\.css$/,
-                    use: ExtractTextPlugin.extract({
+                    use: plugin.extract({
                         fallback: 'style-loader',
                         use: 'css-loader'
                     }),
@@ -198,9 +201,7 @@ export const extractStyle = (paths, globals, theme) => {
                 }
             ]
         },
-        plugins: [
-            new ExtractTextPlugin('[name].[chunkhash].css')
-        ]
+        plugins: [ plugin ]
     }
 };
 

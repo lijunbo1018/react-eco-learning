@@ -9,7 +9,6 @@ import pkg from './package.json'
 
 const PATHS = {
     src: path.join(__dirname, 'src'),
-    style: path.join(__dirname, 'src/common', 'style.less'),
     fonts: path.join(__dirname, 'src/common/anticon'),
     output: path.join(__dirname, 'output')
 };
@@ -27,8 +26,7 @@ if (typeof pkg.theme === 'string' && pkg.theme.charAt(0) === '.') {
 
 const common = {
     entry: {
-        app: PATHS.src,
-        style: PATHS.style
+        app: PATHS.src
     },
     output: {
         path: PATHS.output,

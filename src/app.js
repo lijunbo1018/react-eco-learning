@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { IntlProvider } from 'react-intl'
 import TopMenu from './navigator/components/TopMenu'
+import './common/style.less'
 
 const AppRoot = ({ children, routes, locale, messages }) => (
     <IntlProvider locale={locale} messages={messages}>
