@@ -1,3 +1,3 @@
-# webpack-explore
+# React ecosystem learning
 
-学习探索Webpack的使用
+React生态系统的学习探索
