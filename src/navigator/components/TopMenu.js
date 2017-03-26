@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Menu, Icon, Select } from 'antd'
+import { Menu, Icon } from 'antd'
 import { Link } from 'react-router'
-import { injectIntl } from 'react-intl'
-import { version } from '../../versions'
-import { reloadLocale } from '../../common/global/actions'
 
 const Item = Menu.Item;
-const Option = Select.Option;
 
 class TopMenu extends Component {
     constructor(props) {
@@ -21,27 +16,14 @@ class TopMenu extends Component {
         this.setState({ active: e.key })
     }
     render() {
-        const { intl, locale, switchLocale } = this.props;
         return (
             <header className="top-menu">
                 <div className="version">
-                    <a href={version.url} target="_blank">{version.name}</a>
+                    <a href="/">React</a>
                 </div>
-                <Select value={locale} onChange={switchLocale}>
-                    <Option key="zh-CN">简体中文</Option>
-                    <Option key="en">English</Option>
-                </Select>
                 <Menu mode="horizontal" selectedKeys={[this.state.active]} onClick={this.handleNavClick}>
                     <Item key="index">
-                        <Link to="/index"><Icon type="home" />{intl.formatMessage({id: 'index'})}</Link>
-                    </Item>
-                    {process.env.VERSION !== 'google' &&
-                        <Item key="sample">
-                            <Link to="/sample"><Icon type="appstore-o" />{intl.formatMessage({id: 'sample'})}</Link>
-                        </Item>
-                    }
-                    <Item key="editor">
-                        <Link to="/editor"><Icon type="code-o" />{intl.formatMessage({id: 'editor'})}</Link>
+                        <Link to="/index"><Icon type="home" />首页</Link>
                     </Item>
                 </Menu>
             </header>
@@ -49,16 +31,4 @@ class TopMenu extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        locale: state.locale.locale
-    }
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        switchLocale: locale => dispatch(reloadLocale(locale))
-    }
-};
-
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(TopMenu))
+export default TopMenu

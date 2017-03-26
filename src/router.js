@@ -7,8 +7,6 @@ export default getComponent => (
         <Route path="/" component={App}>
             <IndexRedirect to="index" />
             <Route path="index" getComponent={getComponent('index')} />
-            <Route path="sample" getComponent={getComponent('sample')} />
-            <Route path="editor" getComponent={getComponent('editor')} />
         </Route>
     </Router>
 )

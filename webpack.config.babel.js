@@ -15,11 +15,10 @@ const PATHS = {
 
 const GLOBAL_STYLES = [
     path.join(__dirname, 'src/common'),
-    path.join(__dirname, 'node_modules', 'antd'),
-    path.join(__dirname, 'node_modules', 'codemirror')
+    path.join(__dirname, 'node_modules', 'antd')
 ];
 
-var theme = {};
+let theme = {};
 if (typeof pkg.theme === 'string' && pkg.theme.charAt(0) === '.') {
     theme = require(pkg.theme)
 }
@@ -76,19 +75,18 @@ const common = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Webpack示例项目'
+            title: '深入React技术栈'
         })
     ]
 };
 
-var generateConfig;
+let generateConfig;
 
 const lifecycle = process.env.npm_lifecycle_event || '';
 switch (lifecycle.split(':')[0]) {
     case 'build':
     case 'stats':
         generateConfig = () => {
-            const dependencies = Object.keys(pkg.dependencies).filter(dep => dep !== 'antd' && dep !== 'codemirror');
             return merge(
                 common,
                 {
@@ -101,12 +99,8 @@ switch (lifecycle.split(':')[0]) {
                 },
                 parts.extractBundle([
                     {
-                        name: 'vendor1',
-                        entries: dependencies.filter(dep => dep.indexOf('codemirror') >= 0 || dep.indexOf('react') < 0)
-                    },
-                    {
-                        name: 'vendor2',
-                        entries: dependencies.filter(dep => dep.indexOf('codemirror') < 0 && dep.indexOf('react') >= 0)
+                        name: 'vendor',
+                        entries: Object.keys(pkg.dependencies).filter(dep => dep !== 'antd')
                     },
                     {
                         name: 'manifest'
@@ -149,8 +143,5 @@ switch (lifecycle.split(':')[0]) {
         );
 }
 
-export default (env = {}) => merge(
-    generateConfig(),
-    parts.setFreeVariable('process.env.VERSION', env.target)
-)
+export default generateConfig
 

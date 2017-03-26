@@ -1,18 +1,14 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { IntlProvider } from 'react-intl'
 import TopMenu from './navigator/components/TopMenu'
 import './common/style.less'
 
-const AppRoot = ({ children, routes, locale, messages }) => (
-    <IntlProvider locale={locale} messages={messages}>
-        <div className="root-container">
-            <TopMenu routes={routes} />
-            <div className="page-content">
-                {children}
-            </div>
+const AppRoot = ({ children, routes }) => (
+    <div className="root-container">
+        <TopMenu routes={routes} />
+        <div className="page-content">
+            {children}
         </div>
-    </IntlProvider>
+    </div>
 );
 
-export default connect(state => state.locale)(AppRoot)
+export default AppRoot
