@@ -1,11 +1,11 @@
 {
-  "name": "webpack-explore",
+  "name": "react-eco-learning",
   "version": "1.0.0",
   "description": "learn webpack & usage experiment",
   "main": "src/app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lijunbo1018/webpack-explore.git"
+    "url": "https://github.com/lijunbo1018/react-eco-learning.git"
   },
   "scripts": {
     "start": "webpack-dev-server",
