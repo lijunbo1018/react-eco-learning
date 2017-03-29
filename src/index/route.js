@@ -1,12 +1,14 @@
 import React from 'react'
+import { EditableInput, ReadOnlyInput } from '../HOC/propsProxy'
 import style from './index.less'
 
-const Index = () => {
+const Root = () => {
     return (
         <div>
-            <h1 className={style.greet}>你好, React技术栈</h1>
+            <EditableInput className={style.input} name="editable-input" />
+            <ReadOnlyInput className={style.input} name="useless-name" />
         </div>
     )
 };
 
-export const root = Index;
+export const root = Root;
