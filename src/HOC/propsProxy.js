@@ -9,10 +9,11 @@ class Input extends Component {
         this.printName = this.printName.bind(this)
     }
     printName() {
-        console.log(`Wrapped component's name: ${this.props.name}`)
+        const { input } = this.refs;
+        console.log(`Wrapped component is an ${input.tagName} named ${input.name}`)
     }
     render() {
-        return <input name="name" {...this.props} />
+        return <input ref="input" name="name" {...this.props} />
     }
 }
 
@@ -21,20 +22,16 @@ const Editable = WrappedComponent => class extends Component {
         super(props);
         this.state = {
             value: 'I am editable'
-        };
-        this.onChange = this.onChange.bind(this)
+        }
     }
     onChange(e) {
         this.setState({ value: e.target.value })
-    }
-    printName(instance) {
-        instance.printName()
     }
     render() {
         const newProps = {
             value: this.state.value,
             onChange: this.onChange,
-            ref: this.printName.bind(this)
+            ref: instance => instance.printName()
         };
         return <WrappedComponent {...this.props} {...newProps} />
     }
