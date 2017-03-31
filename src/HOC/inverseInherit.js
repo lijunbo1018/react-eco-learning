@@ -13,7 +13,7 @@ class Input extends Component {
     }
 }
 
-const WrappedInput = WrappedComponent => class extends WrappedComponent {
+const Wrap = WrappedComponent => class extends WrappedComponent {
     constructor(props) {
         super(props)
     }
@@ -41,4 +41,7 @@ const ReadOnly = WrappedComponent => class extends WrappedComponent {
     }
 };
 
-export default ReadOnly(WrappedInput(Input))
+export const WrappedInput = Wrap(Input);
+WrappedInput.displayName = 'WrappedInput';
+export const ReadOnlyInput = ReadOnly(Wrap(Input));
+ReadOnlyInput.displayName = 'ReadOnlyInput';
