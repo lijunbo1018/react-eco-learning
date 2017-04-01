@@ -8,6 +8,14 @@ class Input extends Component {
         super(props);
         this.printName = this.printName.bind(this)
     }
+    // These method will be invoked in case of properties proxy
+    // did mount goes first, will unmount goes last
+    componentDidMount() {
+        console.log('Input did mount')
+    }
+    componentWillUnmount() {
+        console.log('Input will unmount')
+    }
     printName() {
         const { input } = this.refs;
         console.log(`Wrapped component is an ${input.tagName} named ${input.name}`)
@@ -24,6 +32,13 @@ const Editable = WrappedComponent => class extends Component {
             value: 'I am editable'
         }
     }
+    // did mount goes last, will unmount goes first
+    componentDidMount() {
+        console.log(`${this.constructor.displayName} did mount`)
+    }
+    componentWillUnmount() {
+        console.log(`${this.constructor.displayName} will unmount`)
+    }
     onChange(e) {
         this.setState({ value: e.target.value })
     }
@@ -31,7 +46,7 @@ const Editable = WrappedComponent => class extends Component {
         const newProps = {
             value: this.state.value,
             onChange: this.onChange,
-            ref: instance => instance.printName()
+            ref: instance => instance && instance.printName()
         };
         return <WrappedComponent {...this.props} {...newProps} />
     }

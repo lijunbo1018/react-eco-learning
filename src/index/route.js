@@ -1,17 +1,28 @@
-import React from 'react'
-import { EditableInput, ReadOnlyInput } from '../HOC/propsProxy'
-import { WrappedInput, ReadOnlyInput as Input } from '../HOC/inverseInherit'
+import React, { Component } from 'react'
+import { EditableInput } from '../HOC/propsProxy'
+import { ReadOnlyInput } from '../HOC/inverseInherit'
 import style from './index.less'
 
-const Root = () => {
-    return (
-        <div>
-            <EditableInput className={style.input} name="editable-input" />
-            <ReadOnlyInput className={style.input} name="useless-name" />
-            <WrappedInput className={style.input} />
-            <Input className={style.input} />
-        </div>
-    )
-};
+class Container extends Component {
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+        this.state = {
+            showInput: true
+        }
+    }
+    onClick() {
+        this.setState({ showInput: !this.state.showInput })
+    }
+    render() {
+        return (
+            <div>
+                {this.state.showInput && <EditableInput className={style.input} name="editable-input" />}
+                {this.state.showInput && <ReadOnlyInput className={style.input} name="read-only-input" />}
+                <button onClick={this.onClick}>Click to toggle</button>
+            </div>
+        )
+    }
+}
 
-export const root = Root;
+export const root = Container;

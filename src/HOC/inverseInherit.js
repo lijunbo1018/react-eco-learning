@@ -17,6 +17,13 @@ const Wrap = WrappedComponent => class extends WrappedComponent {
     constructor(props) {
         super(props)
     }
+    // These methods won't be invoked in case of inheritance inversion
+    componentDidMount() {
+        console.log(`${this.constructor.displayName} did mount`)
+    }
+    componentWillUnmount() {
+        console.log(`${this.constructor.displayName} will unmount`)
+    }
     render() {
         console.log(JSON.stringify(this.props));
         return super.render()
@@ -26,6 +33,12 @@ const Wrap = WrappedComponent => class extends WrappedComponent {
 const ReadOnly = WrappedComponent => class extends WrappedComponent {
     constructor(props) {
         super(props)
+    }
+    componentDidMount() {
+        console.log(`${this.constructor.displayName} did mount`)
+    }
+    componentWillUnmount() {
+        console.log(`${this.constructor.displayName} will unmount`)
     }
     render() {
         const elementsTree = super.render();
