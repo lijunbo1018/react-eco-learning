@@ -26,6 +26,7 @@ class Input extends Component {
 }
 
 const Editable = WrappedComponent => class extends Component {
+    static displayName = 'EditableInput';
     constructor(props) {
         super(props);
         this.state = {
@@ -63,6 +64,5 @@ const ReadOnly = (name, value = 'I am read-only') => WrappedComponent => props =
 };
 
 export const EditableInput = Editable(Input);
-EditableInput.displayName = 'EditableInput';
 export const ReadOnlyInput = ReadOnly('read-only-input')(Input);
 ReadOnlyInput.displayName = 'ReadOnlyInput';
