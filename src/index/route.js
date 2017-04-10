@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { EditableInput } from '../HOC/propsProxy'
-import { ReadOnlyInput } from '../HOC/inverseInherit'
+import { NavItem, PureNavItem } from './pureComponent'
 import style from './index.less'
 
 class Container extends Component {
@@ -8,17 +7,19 @@ class Container extends Component {
         super(props);
         this.onClick = this.onClick.bind(this);
         this.state = {
-            showInput: true
+            className: ''
         }
     }
     onClick() {
-        this.setState({ showInput: !this.state.showInput })
+        const { className } = this.state;
+        this.setState({ className: className ? '' : style.highlight })
     }
     render() {
         return (
-            <div>
-                {this.state.showInput && <EditableInput className={style.input} name="editable-input" />}
-                {this.state.showInput && <ReadOnlyInput className={style.input} name="read-only-input" />}
+            <div className={this.state.className}>
+                <NavItem text="non-pure nav item" />
+                <PureNavItem text="pure nav item" />
+                <PureNavItem text="broken pure nav item" env={+ new Date()} />
                 <button onClick={this.onClick}>Click to toggle</button>
             </div>
         )
