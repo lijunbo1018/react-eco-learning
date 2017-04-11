@@ -1,0 +1,24 @@
+@enter-duration: 500;
+@leave-duration: 300;
+
+:global {
+    .animate-enter {
+        opacity: 0.01;
+    }
+    .animate-enter.animate-enter-active {
+        opacity: 1;
+        transition: opacity ~"@{enter-duration}ms" ease-in;
+    }
+    .animate-leave {
+        opacity: 1;
+    }
+    .animate-leave.animate-leave-active {
+        opacity: 0.01;
+        transition: opacity ~"@{leave-duration}ms" ease-in;
+    }
+}
+
+:export {
+    enterDuration: @enter-duration;
+    leaveDuration: @leave-duration;
+}
