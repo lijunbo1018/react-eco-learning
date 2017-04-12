@@ -17,10 +17,10 @@
 }
 :global {
     .button-appear {
-        transform: perspective(500px) translate3d(30px, 40px, 250px);
+        transform: scale(0, 0);
     }
     .button-appear.button-appear-active {
-        transform: perspective(500px) translate3d(0, 0, 0);
+        transform: scale(1, 1);
         transition: transform ~"@{enter-duration}ms" ease-in;
     }
 }
