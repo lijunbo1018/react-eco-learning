@@ -1,20 +1,27 @@
 @enter-duration: 500;
 @leave-duration: 300;
 
+.enter {
+    opacity: 0.01;
+}
+.enter.enterActive {
+    opacity: 1;
+    transition: opacity ~"@{enter-duration}ms" ease-in;
+}
+.leave {
+    opacity: 1;
+}
+.leave.leaveActive {
+    opacity: 0.01;
+    transition: opacity ~"@{leave-duration}ms" ease-in;
+}
 :global {
-    .animate-enter {
-        opacity: 0.01;
+    .button-appear {
+        transform: perspective(500px) translate3d(30px, 40px, 250px);
     }
-    .animate-enter.animate-enter-active {
-        opacity: 1;
-        transition: opacity ~"@{enter-duration}ms" ease-in;
-    }
-    .animate-leave {
-        opacity: 1;
-    }
-    .animate-leave.animate-leave-active {
-        opacity: 0.01;
-        transition: opacity ~"@{leave-duration}ms" ease-in;
+    .button-appear.button-appear-active {
+        transform: perspective(500px) translate3d(0, 0, 0);
+        transition: transform ~"@{enter-duration}ms" ease-in;
     }
 }
 
