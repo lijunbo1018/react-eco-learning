@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TodoList from '../transition/cssTransition'
+import CountDown from '../HOC/reactTimeout'
 import style from './index.less'
 
 class Container extends Component {
@@ -8,7 +8,7 @@ class Container extends Component {
     }
     render() {
         return (
-            <TodoList />
+            <CountDown />
         )
     }
 }
