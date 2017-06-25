@@ -29,6 +29,7 @@ const common = {
     },
     output: {
         path: PATHS.output,
+        publicPath: '/',
         filename: '[name].js'
     },
     module: {
